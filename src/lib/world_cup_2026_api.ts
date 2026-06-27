@@ -1,4 +1,4 @@
-import { RawMatch, RawTeam } from '@/types/match';
+import { RawMatch, RawStadium, RawTeam } from '@/types/match';
 
 /**
  * World Cup 2026 data layer.
@@ -16,6 +16,8 @@ const API_BASE = 'https://worldcup26.ir';
 
 const GAMES_URL = `${API_BASE}/get/games`;
 const TEAMS_URL = `${API_BASE}/get/teams`;
+const STADIUMS_URL = `${API_BASE}/get/stadiums`;
+
 
 async function getJson<T>(url: string): Promise<T> {
     const response = await fetch(url);
@@ -33,4 +35,11 @@ export async function fetchRawMatches(): Promise<RawMatch[]> {
 export async function fetchRawTeams(): Promise<RawTeam[]> {
     const { teams } = await getJson<{ teams: RawTeam[] }>(TEAMS_URL);
     return teams;
+}
+
+export async function fetchRawStadiums(): Promise<RawStadium[]> {
+    const { stadiums } = await getJson<{ stadiums: RawStadium[] }>(
+        STADIUMS_URL
+    );
+    return stadiums;
 }

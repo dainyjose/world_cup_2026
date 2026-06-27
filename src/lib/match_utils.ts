@@ -1,4 +1,6 @@
 import { Match, MatchBucket, RawMatch, RawTeam, Team } from '@/types/match';
+import moment from "moment-timezone";
+import { STADIUM_TIMEZONE } from './stadium_timezones';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -12,6 +14,15 @@ export function parseLocalDate(localDate: string): Date {
     const [month, day, year] = datePart.split('/').map(Number);
     const [hours, minutes] = timePart.split(':').map(Number);
     return new Date(year, month - 1, day, hours, minutes);
+}
+
+function formatIndianTime(localDate: string, stadiumId: string) {
+    const timezone = STADIUM_TIMEZONE[stadiumId] ?? "UTC";
+
+    return moment
+        .tz(localDate, "MM/DD/YYYY HH:mm", timezone)
+        .tz("Asia/Kolkata")
+        .format("DD MMM YYYY • hh:mm A");
 }
 
 /** Midnight (local) for a given date — lets us compare calendar days. */
@@ -79,7 +90,7 @@ export function enrichMatch(raw: RawMatch, teams: Map<string, Team>, now: Date):
         kickoff,
         kickoffTime: formatKickoffTime(kickoff),
         kickoffDate: formatMatchDate(kickoff),
-        score: { home: Number(raw.home_score) || 0, away: Number(raw.away_score) || 0 },
+        indianKickoffTime: formatIndianTime(raw.local_date, raw.stadium_id), score: { home: Number(raw.home_score) || 0, away: Number(raw.away_score) || 0 },
         hasScore,
         group: raw.group,
         bucket: getMatchBucket(kickoff, now),

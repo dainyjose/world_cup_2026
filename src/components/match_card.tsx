@@ -1,5 +1,13 @@
-import { FlexAlignType, StyleSheet, View, Image, Text } from "react-native";
+import {
+  FlexAlignType,
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Pressable,
+} from "react-native";
 import { Match, MatchBucket, Team } from "@/types/match";
+import { useState } from "react";
 
 export function MatchCard({
   match,
@@ -8,6 +16,8 @@ export function MatchCard({
   match: Match;
   bucket: MatchBucket;
 }) {
+  const [expanded, setExpanded] = useState(false);
+
   const scoreLabel = match.hasScore
     ? `${match.score.home} - ${match.score.away}`
     : "0 - 0";
@@ -41,7 +51,10 @@ export function MatchCard({
   };
 
   return (
-    <View style={styles.card}>
+    <Pressable
+      onPress={() => setExpanded(!expanded)}
+      style={({ pressed }) => [styles.card, pressed && { opacity: 0.9 }]}
+    >
       <View style={styles.teams}>
         <TeamRow
           team={match.home}
@@ -55,13 +68,19 @@ export function MatchCard({
 
           <Text style={styles.kickoffTime}>{match.kickoffTime}</Text>
           <Text style={styles.group}>Group {match.group}</Text>
+          {expanded && (
+            <View style={styles.localTimeContainer}>
+              <Text style={styles.localTimeLabel}>🇮🇳 India Time</Text>
+              <Text style={styles.localTime}>{match.indianKickoffTime}</Text>
+            </View>
+          )}
         </View>
         <TeamRow
           team={match.away}
           alignment="flex-end"
         />
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -120,5 +139,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     fontWeight: 500,
+  },
+  localTimeContainer: {
+    marginTop: 8,
+    alignItems: "center",
+  },
+
+  localTimeLabel: {
+    fontSize: 12,
+    color: "#666",
+    fontWeight: "600",
+  },
+
+  localTime: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1f2937",
   },
 });

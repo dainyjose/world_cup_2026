@@ -43,6 +43,15 @@ export interface RawTeam {
     id: string;
 }
 
+export interface RawStadium {
+    id: string;
+    name_en: string;
+    fifa_name: string;
+    city_en: string;
+    country_en: string;
+    capacity: number;
+}
+
 /** Which day-bucket a match falls into, relative to "today". */
 export type MatchBucket = 'past' | 'today' | 'upcoming';
 
@@ -64,9 +73,10 @@ export interface Match {
     away: Team;
     /** Parsed kickoff timestamp. */
     kickoff: Date;
-    kickoffDate: string;
     /** Pre-formatted kickoff time, e.g. "1:00 PM". */
     kickoffTime: string;
+    kickoffDate: string;
+    indianKickoffTime: string;
     /** Goals for each side (0-0 before kickoff). */
     score: { home: number; away: number };
     /** True once the match is live or finished, so the score reflects real play. */
