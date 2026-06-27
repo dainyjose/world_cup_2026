@@ -1,38 +1,38 @@
 import { FlexAlignType, StyleSheet, View, Image, Text } from "react-native";
 import { Match, Team } from "@/types/match";
 
-function TeamRow({
-  team,
-  alignment,
-}: {
-  team: Team;
-  alignment: FlexAlignType | undefined;
-}) {
-  return (
-    <View style={[styles.teamRow, { alignItems: "center" }]}>
-      {team.flag ? (
-        <Image
-          source={{ uri: team.flag }}
-          style={styles.flag}
-          resizeMode="cover"
-        />
-      ) : (
-        <View style={[styles.flag, styles.flagPlaceholder]} />
-      )}
-      <Text
-        numberOfLines={1}
-        style={styles.teamName}
-      >
-        {team.name}
-      </Text>
-    </View>
-  );
-}
-
 export function MatchCard({ match }: { match: Match }) {
   const scoreLabel = match.hasScore
     ? `${match.score.home} - ${match.score.away}`
     : "0 - 0";
+
+  const TeamRow = ({
+    team,
+    alignment,
+  }: {
+    team: Team;
+    alignment: FlexAlignType | undefined;
+  }) => {
+    return (
+      <View style={[styles.teamRow, { alignItems: "center" }]}>
+        {team.flag ? (
+          <Image
+            source={{ uri: team.flag }}
+            style={styles.flag}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={[styles.flag, styles.flagPlaceholder]} />
+        )}
+        <Text
+          numberOfLines={1}
+          style={styles.teamName}
+        >
+          {team.name}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.card}>
@@ -43,8 +43,8 @@ export function MatchCard({ match }: { match: Match }) {
         />
         <View style={styles.meta}>
           <Text style={styles.score}>{scoreLabel}</Text>
-          <Text>{match.kickoffTime}</Text>
-          <Text>Group {match.group}</Text>
+          <Text style={styles.kickoffTime}>{match.kickoffTime}</Text>
+          <Text style={styles.group}>Group {match.group}</Text>
         </View>
         <TeamRow
           team={match.away}
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 16,
     padding: 16,
-    borderRadius: 16,
+    borderRadius: 14,
+    backgroundColor: "#e4e4f3",
   },
   teams: {
     flex: 1,
@@ -71,7 +72,8 @@ const styles = StyleSheet.create({
   },
   teamRow: {
     gap: 8,
-    width: "33%",
+    justifyContent: "space-between",
+    flex: 1 / 3,
   },
   flag: {
     width: 28,
@@ -93,7 +95,18 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   score: {
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: 500,
+  },
+  kickoffTime: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: 700,
+  },
+  group: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: 500,
   },
 });

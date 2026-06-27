@@ -94,9 +94,12 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 8,
-    fontSize: 32,
+    fontSize: 30,
     lineHeight: 44,
     fontWeight: 600,
+    justifyContent: "center",
+    alignSelf: "center",
+    marginBottom: 10,
   },
   segmented: {
     width: "100%",
