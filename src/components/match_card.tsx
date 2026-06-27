@@ -61,6 +61,24 @@ export function MatchCard({
           alignment="flex-start"
         />
         <View style={styles.meta}>
+          <View
+            style={[
+              styles.statusChip,
+              match.status === "LIVE"
+                ? styles.liveChip
+                : match.status === "FT"
+                  ? styles.finishedChip
+                  : styles.upcomingChip,
+            ]}
+          >
+            <Text style={styles.statusText}>
+              {match.status === "LIVE"
+                ? "🔴 LIVE"
+                : match.status === "FT"
+                  ? "✅ FT"
+                  : "⏰ UPCOMING"}
+            </Text>
+          </View>
           <Text style={styles.score}>{scoreLabel}</Text>
           {bucket !== "today" && (
             <Text style={styles.date}>{match.kickoffDate}</Text>
@@ -139,6 +157,29 @@ const styles = StyleSheet.create({
     width: 110,
     alignItems: "center",
     justifyContent: "center",
+  },
+  statusChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+    marginBottom: 8,
+  },
+
+  liveChip: {
+    backgroundColor: "#FEE2E2",
+  },
+
+  finishedChip: {
+    backgroundColor: "#DCFCE7",
+  },
+
+  upcomingChip: {
+    backgroundColor: "#DBEAFE",
+  },
+
+  statusText: {
+    fontSize: 11,
+    fontWeight: "700",
   },
   score: {
     fontSize: 22,

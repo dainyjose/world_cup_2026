@@ -83,6 +83,12 @@ export function enrichMatch(raw: RawMatch, teams: Map<string, Team>, now: Date):
     const kickoff = parseLocalDate(raw.local_date);
     const hasScore =
         raw.finished === 'TRUE' || raw.time_elapsed === 'live' || raw.time_elapsed === 'finished';
+    const status =
+        raw.time_elapsed === "live"
+            ? "LIVE"
+            : raw.finished === "TRUE"
+                ? "FT"
+                : "UPCOMING";
     return {
         id: raw.id,
         home: resolveTeam(raw.home_team_id, teams),
@@ -92,6 +98,7 @@ export function enrichMatch(raw: RawMatch, teams: Map<string, Team>, now: Date):
         kickoffDate: formatMatchDate(kickoff),
         indianKickoffTime: formatIndianTime(raw.local_date, raw.stadium_id), score: { home: Number(raw.home_score) || 0, away: Number(raw.away_score) || 0 },
         hasScore,
+        status,
         group: raw.group,
         bucket: getMatchBucket(kickoff, now),
     };

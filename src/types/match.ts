@@ -81,6 +81,7 @@ export interface Match {
     score: { home: number; away: number };
     /** True once the match is live or finished, so the score reflects real play. */
     hasScore: boolean;
+    status: "LIVE" | "FT" | "UPCOMING";
     group: string;
     bucket: MatchBucket;
 }
