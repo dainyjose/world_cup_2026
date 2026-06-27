@@ -1,7 +1,13 @@
 import { FlexAlignType, StyleSheet, View, Image, Text } from "react-native";
-import { Match, Team } from "@/types/match";
+import { Match, MatchBucket, Team } from "@/types/match";
 
-export function MatchCard({ match }: { match: Match }) {
+export function MatchCard({
+  match,
+  bucket,
+}: {
+  match: Match;
+  bucket: MatchBucket;
+}) {
   const scoreLabel = match.hasScore
     ? `${match.score.home} - ${match.score.away}`
     : "0 - 0";
@@ -25,7 +31,7 @@ export function MatchCard({ match }: { match: Match }) {
           <View style={[styles.flag, styles.flagPlaceholder]} />
         )}
         <Text
-          numberOfLines={1}
+          numberOfLines={2}
           style={styles.teamName}
         >
           {team.name}
@@ -43,6 +49,10 @@ export function MatchCard({ match }: { match: Match }) {
         />
         <View style={styles.meta}>
           <Text style={styles.score}>{scoreLabel}</Text>
+          {bucket !== "today" && (
+            <Text style={styles.date}>{match.kickoffDate}</Text>
+          )}
+
           <Text style={styles.kickoffTime}>{match.kickoffTime}</Text>
           <Text style={styles.group}>Group {match.group}</Text>
         </View>
@@ -87,7 +97,6 @@ const styles = StyleSheet.create({
   teamName: {
     flexShrink: 1,
     fontSize: 16,
-    lineHeight: 24,
     fontWeight: 500,
   },
   meta: {
@@ -98,6 +107,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     fontWeight: 500,
+  },
+  date: {
+    fontSize: 12,
   },
   kickoffTime: {
     fontSize: 14,

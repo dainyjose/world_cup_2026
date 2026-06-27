@@ -1,12 +1,14 @@
 import { FlatList, StyleSheet, View, Text } from "react-native";
 import { MatchCard } from "@/components/match_card";
-import { Match } from "@/types/match";
+import { Match, MatchBucket } from "@/types/match";
 
 export function MatchList({
   matches,
+  bucket,
   bottomInset,
 }: {
   matches: Match[];
+  bucket: MatchBucket;
   bottomInset: number;
 }) {
   if (matches.length === 0) {
@@ -22,7 +24,12 @@ export function MatchList({
       style={styles.list}
       data={matches}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <MatchCard match={item} />}
+      renderItem={({ item }) => (
+        <MatchCard
+          match={item}
+          bucket={bucket}
+        />
+      )}
       contentContainerStyle={[styles.content, { paddingBottom: bottomInset }]}
       showsVerticalScrollIndicator={false}
     />

@@ -74,6 +74,7 @@ export default function HomeScreen() {
           ) : (
             <MatchList
               matches={matches}
+              bucket={selectedBucket}
               bottomInset={(Platform.OS == "ios" ? 50 : 80) + 24}
             />
           )}
